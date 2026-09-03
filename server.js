@@ -6,13 +6,15 @@ const livereload = require("livereload");
 const connectLiveReload = require("connect-livereload");
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const authRouter = require('./routes/authRoutes.js');
+const userRouter = require('./routes/userRoutes.js');
 
 // process.env will look at the environment for environment variables
 const PORT = process.env.PORT || 5500;
 
 /* Require the db connection, models, and seed data
 --------------------------------------------------------------- */
-const database = require('./models');
+const database = require('./config/index.js');
 
 //initialize/create the express app
 const app = express();
@@ -32,7 +34,10 @@ app.use(express.json()); //All the requests will be passed using json
 app.use(cookieParser());
 app.use(cors({credentials: true})); // credentials true so that we can send the cookies in the response from the express app
 
+// API Endpoint
 app.get('/', (req, res) => res.send("API Working"));
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 app.use(express.static('public')); // Use the connect-livereload package to connect nodemon and livereload
 app.use(connectLiveReload());
