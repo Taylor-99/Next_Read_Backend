@@ -29,10 +29,14 @@ liveReloadServer.server.once("connection", () => {
     }, 100);
 });
 
+// Add our frontend link
+const allowOrigins = ['http://localhost:5173']
+
 /* Middleware (app.use) */
 app.use(express.json()); //All the requests will be passed using json
 app.use(cookieParser());
-app.use(cors({credentials: true})); // credentials true so that we can send the cookies in the response from the express app
+// credentials true so that we can send the cookies in the response from the express app.
+app.use(cors({ origin: allowOrigins, credentials: true }));  
 
 // API Endpoint
 app.get('/', (req, res) => res.send("API Working"));
